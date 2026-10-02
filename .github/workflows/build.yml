@@ -1,0 +1,30 @@
+name: Build Skautgram
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build APK
+        run: |
+          chmod +x gradlew
+          ./gradlew assemble
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Skautgram-APK
+          path: |
+            **/build/outputs/apk/**/*.apk
